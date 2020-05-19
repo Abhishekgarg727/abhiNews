@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="newsDetailsViewModel"
+            type="com.abhishek.news.ui.dashboard.detail.NewsDetailsViewModel" />
+    </data>
+
+    <ScrollView
+        android:id="@+id/parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/backgroundImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:articleImage="@{newsDetailsViewModel.article.urlToImage}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#2A000000">
+
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:padding="20dp"
+                    android:src="@drawable/ic_left_arrow_black_24dp"
+                    android:tint="@color/white" />
+
+                <com.abhishek.news.customViews.textView.BoldText
+                    android:id="@+id/categoryName"
+                    style="@style/smallTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/white"
+                    android:text="@{newsDetailsViewModel.categoryName}"
+                    tools:text="@tools:sample/full_names" />
+
+                <com.abhishek.news.customViews.textView.BoldText
+                    android:id="@+id/time"
+                    style="@style/smallTextView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:padding="10dp"
+                    android:text="@{newsDetailsViewModel.article.publishedAt}"
+                    android:textColor="@color/white"
+                    tools:text="@tools:sample/date/hhmmss" />
+
+
+            </RelativeLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="300dp"
+                android:background="@drawable/rounded_bottom_sheet_background"
+                android:orientation="vertical">
+
+                <com.abhishek.news.customViews.textView.BoldText
+                    android:id="@+id/headline"
+                    style="@style/mediumTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@{newsDetailsViewModel.article.title}"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@tools:sample/lorem[10]" />
+
+                <com.abhishek.news.customViews.textView.RegularText
+                    android:id="@+id/author"
+                    style="@style/smallTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingBottom="40dp"
+                    android:text="@{newsDetailsViewModel.article.content}"
+                    android:textColor="@color/grey"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/headline"
+                    tools:text="@tools:sample/lorem[80]" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </FrameLayout>
+
+    </ScrollView>
+
+
+</layout>
+

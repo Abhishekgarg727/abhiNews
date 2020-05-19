@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">AbhiNews</string>
+
+    <string name="limit_reached">Developer accounts are limited to a max of 100 results. You are trying to request results 100 to 120. Please upgrade to a paid plan if you need more results.</string>
+
+
+    <string name="cancel">Cancel</string>
+    <string name="progress">Progress</string>
+
+    <string name="something_went_wrong_at_our_side">Something went wrong at our side</string>
+    <string name="oops">Oops!</string>
+    <string name="unable_to_perform_action">Unable to perform action</string>
+
+    <string name="okay">Okay</string>
+    <string name="email_not_found">Email Not Found</string>
+    <string name="enter_your_email_id">Enter your email id</string>
+    <string name="abhinews">AbhiNews</string>
+
+</resources>
+

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="storiesNewsCardItemViewModel"
+            type="com.abhishek.news.ui.dashboard.home.HomeStoriesItemViewModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:onClick="@{(v) -> storiesNewsCardItemViewModel.openDetailScreen(v)}"
+        android:id="@+id/card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:layout_width="130dp"
+            android:layout_height="180dp">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:articleImage="@{storiesNewsCardItemViewModel.article.urlToImage}"
+                tools:src="@tools:sample/avatars" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="bottom"
+                android:background="@color/light_black"
+                android:layout_height="wrap_content">
+
+                <com.abhishek.news.customViews.textView.BoldText
+                    android:id="@+id/headline"
+                    style="@style/smallTextView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@{storiesNewsCardItemViewModel.article.title}"
+                    android:textColor="@color/white"
+                    tools:text="@tools:sample/lorem/random[2]" />
+
+                <com.abhishek.news.customViews.textView.RegularText
+                    style="@style/smallTextView2"
+                    android:id="@+id/time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@{storiesNewsCardItemViewModel.article.publishedAt}"
+                    android:textColor="@color/grey_50"
+                    tools:text="@tools:sample/date/hhmmss" />
+            </LinearLayout>
+
+
+        </FrameLayout>
+
+
+    </androidx.cardview.widget.CardView>
+</layout>
+

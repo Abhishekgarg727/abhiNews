@@ -1,0 +1,92 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/rlDailog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/default_popup"
+            android:gravity="center"
+            android:layout_margin="15dp"
+            android:orientation="vertical">
+
+
+            <com.abhishek.news.customViews.textView.SemiBoldText
+                android:id="@+id/tvHeadingText"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="15dp"
+                android:textColor="@color/black"
+                tools:text="@string/oops" />
+
+            <com.abhishek.news.customViews.textView.MediumText
+                android:id="@+id/tvDescriptionText"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textColor="@color/black"
+                tools:text="@string/something_went_wrong_at_our_side" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/dialog_view_line_color" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="4.01">
+
+                <com.abhishek.news.customViews.textView.SemiBoldText
+                    android:id="@+id/positiveBtn"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/okay"
+                    android:textColor="@color/delete_account" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.01"
+                    android:alpha="0.5"
+                    android:background="@color/dialog_view_line_color" />
+
+                <com.abhishek.news.customViews.textView.SemiBoldText
+                    android:id="@+id/negativeBtn"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/cancel"
+                    android:textColor="@color/facebook_color" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</layout>

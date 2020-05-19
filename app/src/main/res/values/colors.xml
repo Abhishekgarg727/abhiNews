@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_white">@color/grey_50</color>
+
+
+    <color name="colorPrimary">@color/background_white</color>
+    <color name="colorPrimaryDark">@color/background_white</color>
+
+    <color name="colorAccent">@color/black</color>
+    <color name="black">#191d22</color>
+    <color name="light_black">#80191D22</color>
+    <!-- dialog -->
+    <color name="dialog_view_line_color">#c74d4d4d</color>
+    <color name="light_grey_dialog">#F7FCFCFC</color>
+    <color name="white">#FFFFFF</color>
+    <color name="facebook_color">#4867aa</color>
+    <color name="grey">#7d7b7b</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="buzz_reject_btn_text_color">#DD4B39</color>
+
+    <color name="delete_account">@color/buzz_reject_btn_text_color</color>
+
+    <color name="thistle">#E0BBE4</color>
+    <color name="cotton_candy">#FEC8D8</color>
+    <color name="lumber">#FFDFD3</color>
+    <color name="light_cyan">#D9FFFF</color>
+    <color name="nyanza">#D9FFDF</color>
+    <color name="cream">#FFFFCF</color>
+    <color name="pale_pink">#FFDDDD</color>
+    <color name="jet_stream">#BED7D1</color>
+    <color name="misty_rose">#FDDFDF</color>
+    <color name="lavender">#F0DEFD</color>
+
+    <color name="grey_100">#f5f5f5</color>
+    <color name="grey_50">#fafafa</color>
+
+    <color name="red_800">#c62828</color>
+    <color name="pink_800">#ad1457</color>
+    <color name="purple_800">#6a1b9a</color>
+    <color name="orange_800">#ef6c00</color>
+    <color name="blue_800">#1565c0</color>
+    <color name="green_800">#2e7d32</color>
+    <color name="yellow_800">#f9a825</color>
+    <color name="brown_800">#4e342e</color>
+
+
+    <array name="dark_colors">
+        <item>@color/red_800</item>
+        <item>@color/pink_800</item>
+        <item>@color/purple_800</item>
+        <item>@color/orange_800</item>
+        <item>@color/blue_800</item>
+        <item>@color/green_800</item>
+        <item>@color/yellow_800</item>
+        <item>@color/brown_800</item>
+    </array>
+
+    <array name="pastel_colors">
+        <item>@color/thistle</item>
+        <item>@color/cotton_candy</item>
+        <item>@color/lumber</item>
+        <item>@color/light_cyan</item>
+        <item>@color/nyanza</item>
+        <item>@color/cream</item>
+        <item>@color/pale_pink</item>
+        <item>@color/jet_stream</item>
+        <item>@color/misty_rose</item>
+        <item>@color/lavender</item>
+    </array>
+</resources>

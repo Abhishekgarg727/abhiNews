@@ -1,0 +1,32 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+
+    <!--    create by preeti-->
+    <!--    use all edittext and button height define-->
+
+    <!-- start signin, signup-->
+    <!--    end  signin, signup-->
+
+    <!--    start forgot-->
+    <!--    end forgot-->
+
+    <!--    terms & conditions, privacy policy-->
+    <!--  end  terms & conditions, privacy policy-->
+
+    <!--    start verification dialog-->
+    <!--end verification dialog-->
+
+    <!--    start main activity-->
+    <!--end  main activity-->
+    <!--Nav Drawer-->
+    <!--ProfileFragment Steps-->
+    <!-- bottom sheet -->
+    <!--timetable tabs-->
+
+    <!--market place-->
+
+    <!--subscription page-->
+
+
+</resources>

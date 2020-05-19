@@ -1,2 +1,1 @@
-# abhiNews
-AbhiNews is android app
+# Android-News-App-Kotlin-RxJava-Dagger-MVVM
