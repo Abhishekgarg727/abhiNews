@@ -5,10 +5,12 @@ import android.os.Parcelable
 import android.widget.ImageView
 import androidx.annotation.Keep
 import androidx.databinding.BindingAdapter
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.abhishek.news.utils.ClassUtility
 import com.abhishek.news.utils.DateUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
@@ -21,9 +23,13 @@ import java.io.Serializable
 
 
 @Keep
+@Entity(tableName = "Article")
 class Article : Serializable, Parcelable {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "article_id")
+    var id: Long? = null
 
-
+    @Embedded(prefix = "source")
     @SerializedName("source")
     @Expose
     private var source: Source? = null

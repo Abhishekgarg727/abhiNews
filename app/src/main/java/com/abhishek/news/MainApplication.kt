@@ -5,10 +5,10 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
-import androidx.lifecycle.MutableLiveData
 import androidx.multidex.MultiDex
+import androidx.room.Room
+import com.abhishek.news.presistance.database.AppDatabase
 import com.abhishek.news.utils.LoggerUtils
-import com.abhishek.news.utils.MutableLiveDataUtils
 import java.lang.ref.WeakReference
 
 /**
@@ -30,6 +30,13 @@ class MainApplication : Application() {
         fun getAppContext(): Context? {
             return context.get()
         }
+
+        private lateinit var db: AppDatabase
+
+        @JvmStatic
+        fun getDatabase(): AppDatabase {
+            return db
+        }
     }
 
     private lateinit var connectivityManager: ConnectivityManager
@@ -39,6 +46,10 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "abhinews_version_1"
+        ).build()
         context = WeakReference(applicationContext)
         initialiseNetworkConnectionManager()
     }

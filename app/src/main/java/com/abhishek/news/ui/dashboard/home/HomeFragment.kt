@@ -1,9 +1,8 @@
 package com.abhishek.news.ui.dashboard.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,19 +23,13 @@ class HomeFragment : BaseFragment<HomeFragmentBinding, HomeViewModel, HomeNaviga
         fun newInstance() = HomeFragment()
     }
 
-    private var headlineList: MutableList<HomeHeadlinesItemViewModel> = mutableListOf()
     private var headlineAdapter: HomeHeadlinesAdapter? = null
-
-    private var feedsList: MutableList<HomeFeedsItemViewModel> = mutableListOf()
     private var feedsAdapter: HomeFeedsAdapter? = null
-
-    private var storiesList: MutableList<HomeStoriesItemViewModel> = mutableListOf()
     private var storiesAdapter: HomeStoriesAdapter? = null
 
     override var mViewModel: HomeViewModel
         get() = ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        set(value) {
-        }
+        set(value) {}
 
     override val layoutId: Int
         get() = R.layout.home_fragment
@@ -44,49 +37,16 @@ class HomeFragment : BaseFragment<HomeFragmentBinding, HomeViewModel, HomeNaviga
     override val bindingVariable: Int
         get() = BR.homeViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun updateHeadLines(list: List<HomeHeadlinesItemViewModel>) {
-        if (!list.isNullOrEmpty()) {
-            if (mViewModel.headlinesPageNumber == 1) headlineList.clear()
-            headlineList.addAll(list)
-            headlineAdapter?.notifyDataSetChanged()
-        }
-    }
-
-    override fun updateFeeds(list: List<HomeFeedsItemViewModel>) {
-        if (!list.isNullOrEmpty()) {
-            if (mViewModel.feedsPageNumber == 1) feedsList.clear()
-            feedsList.addAll(list)
-            feedsAdapter?.notifyDataSetChanged()
-        }
-    }
-
-    override fun updateStories(list: List<HomeStoriesItemViewModel>) {
-        if (!list.isNullOrEmpty()) {
-            if (mViewModel.storiesPageNumber == 1) storiesList.clear()
-            storiesList.addAll(list)
-            storiesAdapter?.notifyDataSetChanged()
-        }
-    }
-
-
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         init()
     }
 
-
     private fun init() {
         if (mContext != null) {
             initViewModel()
             setupListAdapters()
+            setupAdapterDataObserver()
             fetchDataFromServer()
             setupHeadlinesRecycleView()
             setupStoriesRecycleView()
@@ -94,26 +54,50 @@ class HomeFragment : BaseFragment<HomeFragmentBinding, HomeViewModel, HomeNaviga
         }
     }
 
+
     private fun initViewModel() {
         mViewModel.getNavigator() ?: mViewModel.setNavigator(this)
-        mViewModel.progressBar =
-            mViewModel.progressBar ?: ClassUtility.getCustomProgressBar(mContext)
+        mViewModel.progressBar = mViewModel.progressBar
+            ?: ClassUtility.getCustomProgressBar(mContext)
     }
 
     private fun setupListAdapters() {
-        headlineAdapter = headlineAdapter ?: HomeHeadlinesAdapter(headlineList, mContext, this)
-        storiesAdapter = storiesAdapter ?: HomeStoriesAdapter(storiesList, mContext, this)
-        feedsAdapter = feedsAdapter ?: HomeFeedsAdapter(feedsList, mContext, this)
+        // headlines
+        headlineAdapter = headlineAdapter ?: mViewModel.headlinesMutableLiveDataList.value?.let {
+            HomeHeadlinesAdapter(it, mContext, this)
+        }
+        // stories
+        storiesAdapter = storiesAdapter ?: mViewModel.storiesMutableLiveDataList.value?.let {
+            HomeStoriesAdapter(it, mContext, this)
+        }
+        // feeds
+        feedsAdapter = feedsAdapter ?: mViewModel.feedsMutableLiveDataList.value?.let {
+            HomeFeedsAdapter(it, mContext, this)
+        }
+    }
+
+    private fun setupAdapterDataObserver() {
+        viewDataBinding.lifecycleOwner?.let {
+            mViewModel.feedsMutableLiveDataList.observe(it, Observer {
+                feedsAdapter?.notifyDataSetChanged()
+            })
+            mViewModel.storiesMutableLiveDataList.observe(it, Observer {
+                storiesAdapter?.notifyDataSetChanged()
+            })
+            mViewModel.headlinesMutableLiveDataList.observe(it, Observer {
+                headlineAdapter?.notifyDataSetChanged()
+            })
+        }
     }
 
     private fun fetchDataFromServer() {
-        if (headlineList.isNullOrEmpty())
+        if (mViewModel.headlinesMutableLiveDataList.value.isNullOrEmpty())
             mViewModel.fetchHeadlinesFromServer(mContext ?: requireContext(), true)
 
-        if (storiesList.isNullOrEmpty())
+        if (mViewModel.storiesMutableLiveDataList.value.isNullOrEmpty())
             mViewModel.fetchStoriesFromServer(mContext ?: requireContext(), true)
 
-        if (feedsList.isNullOrEmpty())
+        if (mViewModel.feedsMutableLiveDataList.value.isNullOrEmpty())
             mViewModel.fetchFeedsFromServer(mContext ?: requireContext(), true)
     }
 
@@ -175,7 +159,6 @@ class HomeFragment : BaseFragment<HomeFragmentBinding, HomeViewModel, HomeNaviga
             }
         })
         viewDataBinding.feedNewsListRecycleView.adapter = feedsAdapter
-
     }
 
     override fun onFeedItemClick(view: View, article: Article) {

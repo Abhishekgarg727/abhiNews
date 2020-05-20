@@ -1,9 +1,7 @@
-package com.abhishek.news.utils;
+package com.abhishek.news.presistance.local;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import com.abhishek.news.MainApplication;
 
 /*
  * A Singleton for managing your SharedPreferences.

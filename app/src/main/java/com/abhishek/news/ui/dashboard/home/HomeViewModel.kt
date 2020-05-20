@@ -2,6 +2,7 @@ package com.abhishek.news.ui.dashboard.home
 
 import android.app.Dialog
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import com.abhishek.news.api.ApiHandler
 import com.abhishek.news.api.RetrofitInstance
 import com.abhishek.news.base.BaseViewModel
@@ -13,14 +14,28 @@ import com.abhishek.news.utils.ClassUtility
 class HomeViewModel : BaseViewModel<HomeNavigator>() {
 
     var progressBar: Dialog? = null
-    var feedsPageNumber: Int = 1;
-    var feedsAvailablePages: Int = 0;
+    var feedsPageNumber: Int = 1
+    var feedsAvailablePages: Int = 0
 
-    var storiesPageNumber: Int = 1;
-    var storiesAvailablePages: Int = 0;
+    var storiesPageNumber: Int = 1
+    var storiesAvailablePages: Int = 0
 
-    var headlinesPageNumber: Int = 1;
-    var headlinesAvailablePages: Int = 0;
+    var headlinesPageNumber: Int = 1
+    var headlinesAvailablePages: Int = 0
+
+    var feedsMutableLiveDataList: MutableLiveData<MutableList<HomeFeedsItemViewModel>> =
+        MutableLiveData(
+            mutableListOf()
+        )
+    var storiesMutableLiveDataList: MutableLiveData<MutableList<HomeStoriesItemViewModel>> =
+        MutableLiveData(
+            mutableListOf()
+        )
+    var headlinesMutableLiveDataList: MutableLiveData<MutableList<HomeHeadlinesItemViewModel>> =
+        MutableLiveData(
+            mutableListOf()
+        )
+
 
     fun fetchHeadlinesFromServer(context: Context, initialCall: Boolean = false) {
         if (initialCall) {
@@ -93,13 +108,17 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
             override fun onSuccess(`object`: TopHeadlinesModel?) {
                 progressBar?.dismiss()
                 if (`object` != null && !`object`.getArticles().isNullOrEmpty()) {
+
                     storiesAvailablePages = `object`.getTotalResults()
-                    val list: MutableList<HomeStoriesItemViewModel> = arrayListOf()
+
+                    val list: MutableList<HomeStoriesItemViewModel> =
+                        storiesMutableLiveDataList.value ?: arrayListOf()
+
                     for (article: Article in `object`.getArticles()) {
                         val item = HomeStoriesItemViewModel(article)
                         list.add(item)
                     }
-                    getNavigator()?.updateStories(list)
+                    storiesMutableLiveDataList.value = list
                 }
             }
 
@@ -116,12 +135,13 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
                 progressBar?.dismiss()
                 if (`object` != null && !`object`.getArticles().isNullOrEmpty()) {
                     feedsAvailablePages = `object`.getTotalResults()
-                    val list: MutableList<HomeFeedsItemViewModel> = arrayListOf()
+                    val list: MutableList<HomeFeedsItemViewModel> =
+                        feedsMutableLiveDataList.value ?: arrayListOf()
                     for (article: Article in `object`.getArticles()) {
                         val item = HomeFeedsItemViewModel(article)
                         list.add(item)
                     }
-                    getNavigator()?.updateFeeds(list)
+                    feedsMutableLiveDataList.value = list
                 }
             }
 
@@ -137,8 +157,12 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
             override fun onSuccess(`object`: TopHeadlinesModel?) {
                 progressBar?.dismiss()
                 if (`object` != null && !`object`.getArticles().isNullOrEmpty()) {
+
                     headlinesAvailablePages = `object`.getTotalResults()
-                    val list: MutableList<HomeHeadlinesItemViewModel> = arrayListOf()
+
+                    val list: MutableList<HomeHeadlinesItemViewModel> =
+                        headlinesMutableLiveDataList.value ?: arrayListOf()
+
                     for (article: Article in `object`.getArticles()) {
                         val item = HomeHeadlinesItemViewModel(
                             article,
@@ -146,7 +170,7 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
                         )
                         list.add(item)
                     }
-                    getNavigator()?.updateHeadLines(list)
+                    headlinesMutableLiveDataList.value ?: arrayListOf()
                 }
             }
 

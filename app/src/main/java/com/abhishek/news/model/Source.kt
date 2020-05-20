@@ -2,9 +2,11 @@ package com.abhishek.news.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+
 
 /**
  * Created by Abhishek Garg on 16/05/20 - https://www.linkedin.com/in/abhishekgarg727/
@@ -13,6 +15,9 @@ import java.io.Serializable
 
 
 class Source : Serializable, Parcelable {
+    @ColumnInfo(name = "source_id")
+    var sourceId: Long? = null
+
     @SerializedName("id")
     @Expose
     private var id: String? = null

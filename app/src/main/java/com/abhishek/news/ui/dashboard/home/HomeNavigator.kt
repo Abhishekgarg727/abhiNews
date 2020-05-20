@@ -8,9 +8,4 @@ import com.abhishek.news.model.Article
  */
 interface HomeNavigator {
 
-    fun updateHeadLines(list: List<HomeHeadlinesItemViewModel>)
-
-    fun updateFeeds(list: List<HomeFeedsItemViewModel>)
-
-    fun updateStories(list: List<HomeStoriesItemViewModel>)
 }
