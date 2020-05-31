@@ -3,8 +3,9 @@ package com.abhishek.news.api;
 import android.content.Context;
 import android.os.NetworkOnMainThreadException;
 
+import com.abhishek.news.MainApplication;
 import com.abhishek.news.R;
-import com.abhishek.news.customViews.dialog.CustomDialog;
+import com.abhishek.news.utils.ClassUtility;
 import com.abhishek.news.utils.LoggerUtils;
 import com.abhishek.news.utils.RetrofitUtils;
 import com.google.gson.annotations.SerializedName;
@@ -28,8 +29,8 @@ public class ApiHandler<T> {
     private FailCallback failCallback;
 
 
-    public ApiHandler(Context context) {
-        this.context = context;
+    public ApiHandler() {
+        this.context = MainApplication.getAppContext();
         this.startCallback = () -> {
         };
     }
@@ -69,21 +70,20 @@ public class ApiHandler<T> {
             };
         }
         startCallback.onStart();
-        call.enqueue(retrofitCallback(context, handle));
+        call.enqueue(retrofitCallback(handle));
         return this;
     }
 
     // success
-    private void success(Handle<T> handle, Response<T> response, Context context) {
+    private void success(Handle<T> handle, Response<T> response) {
 
         switch (response.code()) {
             case 200:
                 handle.onSuccess(response.body());
                 break;
             case 426:
-                CustomDialog.singleBtnDialog(context,
-                        "Oops!", context.getResources().getString(R.string.limit_reached),
-                        () -> handle.onFail(new Error()));
+                ClassUtility.shortToast("Developer accounts are limited to a max of 100 results");
+                handle.onFail(new Error());
                 break;
             default:
                 Error parseError = RetrofitUtils.parseError(response, new Error());
@@ -96,13 +96,13 @@ public class ApiHandler<T> {
                 }
 
                 final Error error = parseError;
-
-                CustomDialog.singleBtnDialog(context, "Oops!", error.getMessage(), () -> handle.onFail(error));
+                ClassUtility.shortToast("Oops!" + error.getMessage());
+                handle.onFail(error);
         }
     }
 
     // failure
-    private void failure(Handle handle, Throwable t, Context context) {
+    private void failure(Handle handle, Throwable t) {
 
         String message = context.getResources().getString(R.string.unable_to_perform_action);
         String log;
@@ -134,20 +134,20 @@ public class ApiHandler<T> {
         error.setStatus(0);
         error.setSuccess(false);
 
-        CustomDialog.singleBtnDialog(context, "Info", error.getMessage(), () -> handle.onFail(error));
+        //  CustomDialog.singleBtnDialog(context, "Info", error.getMessage(), () -> handle.onFail(error));
     }
 
     // retrofit call back
-    private retrofit2.Callback<T> retrofitCallback(Context context, Handle<T> handle) {
+    private retrofit2.Callback<T> retrofitCallback(Handle<T> handle) {
         return new retrofit2.Callback<T>() {
             @Override
             public void onResponse(@NotNull Call<T> call, @NotNull Response<T> response) {
-                success(handle, response, context);
+                success(handle, response);
             }
 
             @Override
             public void onFailure(@NotNull Call<T> call, @NotNull Throwable t) {
-                failure(handle, t, context);
+                failure(handle, t);
             }
         };
     }

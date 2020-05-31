@@ -1,7 +1,5 @@
 package com.abhishek.news.api;
 
-import android.content.Context;
-
 import com.abhishek.news.MainApplication;
 import com.abhishek.news.utils.LoggerUtils;
 
@@ -12,12 +10,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class NetworkConnectionInterceptor implements Interceptor {
-
-    private Context mContext;
-
-    public NetworkConnectionInterceptor(Context context) {
-        mContext = context;
-    }
 
     @Override
     public Response intercept(Chain chain) throws IOException {

@@ -168,7 +168,7 @@ public class ClassUtility {
             return;
         }
 
-        Glide.with(context)
+        GlideApp.with(context)
                 .setDefaultRequestOptions(new RequestOptions().timeout(30000))
                 .load(url)
                 .placeholder(new ColorDrawable(getRandomPastelColor(context)))
@@ -232,9 +232,9 @@ public class ClassUtility {
         return pastelColors[getRandomNumber(pastelColors.length)];
     }
 
-    public static int getRandomDarkColor(Context context) {
+    public static int getRandomDarkColor() {
         if (darkColors == null) {
-            darkColors = context.getResources().getIntArray(R.array.dark_colors);
+            darkColors = MainApplication.getAppContext().getResources().getIntArray(R.array.dark_colors);
         }
         return darkColors[getRandomNumber(darkColors.length)];
     }

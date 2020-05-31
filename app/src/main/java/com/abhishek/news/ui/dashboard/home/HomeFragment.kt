@@ -3,7 +3,7 @@ package com.abhishek.news.ui.dashboard.home
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +28,7 @@ class HomeFragment : BaseFragment<HomeFragmentBinding, HomeViewModel, HomeNaviga
     private var storiesAdapter: HomeStoriesAdapter? = null
 
     override var mViewModel: HomeViewModel
-        get() = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        get() = ViewModelProvider(this).get(HomeViewModel::class.java)
         set(value) {}
 
     override val layoutId: Int
@@ -92,13 +92,13 @@ class HomeFragment : BaseFragment<HomeFragmentBinding, HomeViewModel, HomeNaviga
 
     private fun fetchDataFromServer() {
         if (mViewModel.headlinesMutableLiveDataList.value.isNullOrEmpty())
-            mViewModel.fetchHeadlinesFromServer(mContext ?: requireContext(), true)
+            mViewModel.fetchHeadlinesFromServer()
 
         if (mViewModel.storiesMutableLiveDataList.value.isNullOrEmpty())
-            mViewModel.fetchStoriesFromServer(mContext ?: requireContext(), true)
+            mViewModel.fetchStoriesFromServer()
 
         if (mViewModel.feedsMutableLiveDataList.value.isNullOrEmpty())
-            mViewModel.fetchFeedsFromServer(mContext ?: requireContext(), true)
+            mViewModel.fetchFeedsFromServer()
     }
 
     private fun setupHeadlinesRecycleView() {
@@ -115,7 +115,7 @@ class HomeFragment : BaseFragment<HomeFragmentBinding, HomeViewModel, HomeNaviga
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollHorizontally(1)) {
-                    mViewModel.fetchHeadlinesFromServer(mContext ?: requireContext())
+                    mViewModel.fetchHeadlinesFromServer()
                 }
             }
         })
@@ -135,7 +135,7 @@ class HomeFragment : BaseFragment<HomeFragmentBinding, HomeViewModel, HomeNaviga
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollHorizontally(1)) {
-                    mViewModel.fetchStoriesFromServer(mContext ?: requireContext())
+                    mViewModel.fetchStoriesFromServer()
                 }
             }
         })
@@ -154,7 +154,7 @@ class HomeFragment : BaseFragment<HomeFragmentBinding, HomeViewModel, HomeNaviga
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollVertically(1)) {
-                    mViewModel.fetchFeedsFromServer(mContext ?: requireContext())
+                    mViewModel.fetchFeedsFromServer()
                 }
             }
         })

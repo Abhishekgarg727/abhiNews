@@ -1,7 +1,5 @@
 package com.abhishek.news.api;
 
-import android.content.Context;
-
 import com.abhishek.news.BuildConfig;
 
 import java.io.IOException;
@@ -24,11 +22,11 @@ public class RetrofitInstance {
     private String accessToken = null;
 
     // for users who are not signed in yet
-    public static RestApiService getApiService(Context context) {
+    public static RestApiService getApiService() {
         if (newUserAPIService == null) {
             newUserAPIService = new Retrofit
                     .Builder()
-                    .client(getHttpClient(context))
+                    .client(getHttpClient())
                     .baseUrl(BuildConfig.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
@@ -37,13 +35,13 @@ public class RetrofitInstance {
     }
 
 
-    private static OkHttpClient getHttpClient(Context context) {
+    private static OkHttpClient getHttpClient() {
         if (newUserHttpClient == null) {
             newUserHttpClient = new OkHttpClient.Builder()
                     .connectTimeout(1, TimeUnit.MINUTES)
                     .readTimeout(30, TimeUnit.SECONDS)
                     .writeTimeout(15, TimeUnit.SECONDS)
-                    .addInterceptor(new NetworkConnectionInterceptor(context))
+                    .addInterceptor(new NetworkConnectionInterceptor())
                     .addInterceptor(new Interceptor() {
                         @Override
                         public Response intercept(Chain chain) throws IOException {

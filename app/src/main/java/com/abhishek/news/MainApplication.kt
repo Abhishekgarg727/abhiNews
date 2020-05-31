@@ -30,13 +30,6 @@ class MainApplication : Application() {
         fun getAppContext(): Context? {
             return context.get()
         }
-
-        private lateinit var db: AppDatabase
-
-        @JvmStatic
-        fun getDatabase(): AppDatabase {
-            return db
-        }
     }
 
     private lateinit var connectivityManager: ConnectivityManager
@@ -46,10 +39,6 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "abhinews_version_1"
-        ).build()
         context = WeakReference(applicationContext)
         initialiseNetworkConnectionManager()
     }

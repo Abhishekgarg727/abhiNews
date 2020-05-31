@@ -1,7 +1,6 @@
 package com.abhishek.news.ui.dashboard.home
 
 import android.app.Dialog
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.abhishek.news.api.ApiHandler
 import com.abhishek.news.api.RetrofitInstance
@@ -16,12 +15,15 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
     var progressBar: Dialog? = null
     var feedsPageNumber: Int = 1
     var feedsAvailablePages: Int = 0
+    var feedsInitialCallFlag = true
 
     var storiesPageNumber: Int = 1
     var storiesAvailablePages: Int = 0
+    var storiesInitialCallFlag = true
 
     var headlinesPageNumber: Int = 1
     var headlinesAvailablePages: Int = 0
+    var headlinesInitialCallFlag = true
 
     var feedsMutableLiveDataList: MutableLiveData<MutableList<HomeFeedsItemViewModel>> =
         MutableLiveData(
@@ -36,41 +38,30 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
             mutableListOf()
         )
 
-
-    fun fetchHeadlinesFromServer(context: Context, initialCall: Boolean = false) {
-        if (initialCall) {
-            headlinesPageNumber = 1
-            headlinesAvailablePages = 0
-        } else {
-            headlinesPageNumber++
-        }
-        if (initialCall || headlinesPageNumber < headlinesAvailablePages) {
-            ApiHandler<TopHeadlinesModel>(context)
+    fun fetchHeadlinesFromServer() {
+        if (headlinesPageNumber < headlinesAvailablePages || headlinesInitialCallFlag) {
+            if (headlinesInitialCallFlag) headlinesInitialCallFlag = false
+            ApiHandler<TopHeadlinesModel>()
                 .onStart { progressBar?.show() }
                 .doApiCall(
-                    RetrofitInstance.getApiService(context)
+                    RetrofitInstance.getApiService()
                         .getTopHeadlines(
                             pageNumber = headlinesPageNumber,
                             category = ApiConstants.GENERAL.value
                         )
                 )
-                .addHandler(getHandlerForFetchHeadline(context))
+                .addHandler(getHandlerForFetchHeadline())
                 .build()
         }
     }
 
-    fun fetchStoriesFromServer(context: Context, initialCall: Boolean = false) {
-        if (initialCall) {
-            storiesPageNumber = 1
-            storiesAvailablePages = 0
-        } else {
-            storiesPageNumber++
-        }
-        if (initialCall || storiesPageNumber < storiesAvailablePages) {
-            ApiHandler<TopHeadlinesModel>(context)
+    fun fetchStoriesFromServer() {
+        if (storiesPageNumber < storiesAvailablePages || storiesInitialCallFlag) {
+            if (storiesInitialCallFlag) storiesInitialCallFlag = false
+            ApiHandler<TopHeadlinesModel>()
                 .onStart { progressBar?.show() }
                 .doApiCall(
-                    RetrofitInstance.getApiService(context)
+                    RetrofitInstance.getApiService()
                         .getTopHeadlines(
                             pageNumber = storiesPageNumber,
                             category = ApiConstants.ENTERTAINMENT.value
@@ -81,18 +72,13 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
         }
     }
 
-    fun fetchFeedsFromServer(context: Context, initialCall: Boolean = false) {
-        if (initialCall) {
-            feedsPageNumber = 1
-            feedsAvailablePages = 0
-        } else {
-            feedsPageNumber++
-        }
-        if (initialCall || feedsPageNumber < feedsAvailablePages) {
-            ApiHandler<TopHeadlinesModel>(context)
+    fun fetchFeedsFromServer() {
+        if (feedsPageNumber < feedsAvailablePages || feedsInitialCallFlag) {
+            if (feedsInitialCallFlag) feedsInitialCallFlag = false
+            ApiHandler<TopHeadlinesModel>()
                 .onStart { progressBar?.show() }
                 .doApiCall(
-                    RetrofitInstance.getApiService(context)
+                    RetrofitInstance.getApiService()
                         .getTopHeadlines(
                             pageNumber = feedsPageNumber,
                             category = ApiConstants.SPORTS.value
@@ -107,6 +93,7 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
         return object : ApiHandler.Handle<TopHeadlinesModel> {
             override fun onSuccess(`object`: TopHeadlinesModel?) {
                 progressBar?.dismiss()
+                storiesPageNumber++
                 if (`object` != null && !`object`.getArticles().isNullOrEmpty()) {
 
                     storiesAvailablePages = `object`.getTotalResults()
@@ -132,15 +119,19 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
     private fun getHandlerForFetchFeeds(): ApiHandler.Handle<TopHeadlinesModel> {
         return object : ApiHandler.Handle<TopHeadlinesModel> {
             override fun onSuccess(`object`: TopHeadlinesModel?) {
-                progressBar?.dismiss()
+                feedsPageNumber++
                 if (`object` != null && !`object`.getArticles().isNullOrEmpty()) {
+
                     feedsAvailablePages = `object`.getTotalResults()
+
                     val list: MutableList<HomeFeedsItemViewModel> =
                         feedsMutableLiveDataList.value ?: arrayListOf()
+
                     for (article: Article in `object`.getArticles()) {
                         val item = HomeFeedsItemViewModel(article)
                         list.add(item)
                     }
+                    progressBar?.dismiss()
                     feedsMutableLiveDataList.value = list
                 }
             }
@@ -152,10 +143,11 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
         }
     }
 
-    private fun getHandlerForFetchHeadline(context: Context): ApiHandler.Handle<TopHeadlinesModel> {
+    private fun getHandlerForFetchHeadline(): ApiHandler.Handle<TopHeadlinesModel> {
         return object : ApiHandler.Handle<TopHeadlinesModel> {
             override fun onSuccess(`object`: TopHeadlinesModel?) {
                 progressBar?.dismiss()
+                headlinesPageNumber++
                 if (`object` != null && !`object`.getArticles().isNullOrEmpty()) {
 
                     headlinesAvailablePages = `object`.getTotalResults()
@@ -166,7 +158,7 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
                     for (article: Article in `object`.getArticles()) {
                         val item = HomeHeadlinesItemViewModel(
                             article,
-                            ClassUtility.getRandomDarkColor(context)
+                            ClassUtility.getRandomDarkColor()
                         )
                         list.add(item)
                     }
